@@ -3,7 +3,7 @@
    Cache-First Strategy, Full Offline Functionality, Auto Cleanup
    ========================================================================== */
 
-const CACHE_NAME = 'my-discipline-v1.5.0';
+const CACHE_NAME = 'my-discipline-v1.6.0';
 
 const ASSETS_TO_CACHE = [
   './',

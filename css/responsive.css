@@ -156,16 +156,36 @@
   }
 }
 
-/* Mobile Bottom Navigation */
+/* Mobile Layout Optimizations */
+@media (max-width: 600px) {
+  .today-hero-header {
+    gap: 12px;
+    align-items: center;
+  }
+
+  .today-hero-header .today-badges-block {
+    display: none; /* Top header already displays streak and points on mobile */
+  }
+
+  .today-main-date {
+    white-space: nowrap;
+    font-size: 13px;
+  }
+}
+
+/* Mobile Bottom Navigation - Sleek, Compact Native App Style */
 .mobile-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 30;
-  background-color: #0E1017;
-  border-top: 1px solid var(--border-line);
-  padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  background-color: rgba(13, 16, 23, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 768px) {
@@ -175,26 +195,40 @@
 }
 
 .mobile-nav-inner {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  max-width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 420px;
   margin: 0 auto;
+  height: 52px;
 }
 
 .mobile-nav-btn {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 0;
-  min-height: 48px;
+  gap: 3px;
+  padding: 4px 2px;
+  height: 48px;
   border-radius: var(--radius-md);
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: #64748B;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px;
+  max-height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.2s ease;
 }
 
 .mobile-nav-btn:active {
@@ -205,11 +239,22 @@
   color: var(--mint-primary);
 }
 
+.mobile-nav-btn.active svg {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 6px rgba(0, 229, 153, 0.5));
+}
+
 .mobile-nav-label {
-  font-size: 10.5px;
-  font-weight: 600;
-  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1;
+  color: inherit;
+}
+
+.mobile-nav-btn.active .mobile-nav-label {
+  font-weight: 700;
+  color: var(--mint-primary);
 }
 
 .grid-3 {
