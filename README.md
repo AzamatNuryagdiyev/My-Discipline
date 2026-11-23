@@ -70,9 +70,7 @@ my-discipline/
 ├── README.md                    # Loyiha qo‘llanmasi
 ├── assets/
 │   └── icons/
-│       ├── icon.svg             # Asosiy vektorli brend logotipi
-│       ├── icon-192.png         # 192x192 PWA ikonka (maskable)
-│       └── icon-512.png         # 512x512 PWA ikonka (maskable)
+│       └── icon.jpg             # Asosiy brend logotipi va PWA ikonka
 ├── css/
 │   ├── main.css                 # Dark/Light CSS Variables, Reset, Typography
 │   ├── components.css           # Kartalar, Tugmalar, Formalar, Modallar, Toastlar

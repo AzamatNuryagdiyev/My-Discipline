@@ -3,7 +3,7 @@
    Cache-First Strategy, Full Offline Functionality, Auto Cleanup
    ========================================================================== */
 
-const CACHE_NAME = 'my-discipline-v1.6.0';
+const CACHE_NAME = 'my-discipline-v1.7.0';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -12,9 +12,7 @@ const ASSETS_TO_CACHE = [
   './css/main.css',
   './css/components.css',
   './css/responsive.css',
-  './assets/icons/icon.svg',
-  './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png',
+  './assets/icons/icon.jpg',
   './js/app.js',
   './js/core/dates.js',
   './js/core/storage.js',

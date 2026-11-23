@@ -750,6 +750,15 @@
   gap: 8px;
 }
 
+.brand-icon-img {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(0, 229, 153, 0.25);
+  flex-shrink: 0;
+}
+
 .brand-title {
   font-size: 14px;
   font-weight: 700;
