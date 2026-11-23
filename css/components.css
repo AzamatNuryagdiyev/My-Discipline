@@ -131,6 +131,28 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.today-motivation-card.tier-zero {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, rgba(245, 158, 11, 0.02) 100%);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.10);
+}
+
+.today-motivation-card.tier-zero .motivation-refresh-btn {
+  color: #F59E0B;
+}
+
+.today-motivation-card.tier-low {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(234, 179, 8, 0.02) 100%);
+  border-color: rgba(234, 179, 8, 0.28);
+}
+
+.today-motivation-card.tier-perfect {
+  background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, rgba(0, 229, 153, 0.03) 100%);
+  border-color: var(--mint-border);
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.18);
 }
 
 .today-motivation-quote {
@@ -139,11 +161,18 @@
   color: #F3F4F6;
   letter-spacing: -0.015em;
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 .today-motivation-quote .highlight-mint {
   color: var(--mint-primary);
   font-weight: 600;
+}
+
+.today-motivation-quote .highlight-amber {
+  color: #F59E0B;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
 }
 
 .motivation-refresh-btn {

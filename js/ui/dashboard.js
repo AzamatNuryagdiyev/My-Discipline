@@ -14,14 +14,50 @@ import { getStreakInfo, getTotalPoints } from '../features/statistics.js';
 import { getBadgesStatus } from '../features/achievements.js';
 import { openEditTaskModal, openEditGoalModal, openEditJournalModal, ICONS } from './components.js';
 
-// Motivation Quotes with highlight phrasing
-const MOTIVATION_QUOTES = [
-  'Barakalla, yaxshi davom et! <span class="highlight-mint">Marra yaqin.</span>',
-  'Kuchli temp! <span class="highlight-mint">100% qilmasdan to‘xtama.</span>',
-  'Haqiqiy intizom egasi! <span class="highlight-mint">So‘zingni amalda isbotla.</span>',
-  'Boshlash oson, lekin natija <span class="highlight-mint">oxirigacha borganlarga</span> beriladi.',
-  'Bugun o‘zingni yeng! <span class="highlight-mint">Har bir vazifa kelajak poydevori.</span>'
-];
+// Motivation & Cautionary Quotes with Discipline Level Categorization
+export const DISCIPLINE_QUOTES = {
+  zero: [
+    'Kun o‘tib boryapti! <span class="highlight-amber">Dangasalikni yeng, darhol birinchi vazifani boshla!</span>',
+    'Rejalar qog‘ozda qolib ketmasin! <span class="highlight-amber">Hali 0%. Harakatni hozirdan boshla.</span>',
+    'Hali birorta vazifa bajarilmadi! <span class="highlight-amber">Bahonalarni to‘xtatib, ishga kirish.</span>',
+    'Vaqt kutmaydi! <span class="highlight-amber">Bugun o‘zingga bergan va’dangni bajarmaysanmi?</span>'
+  ],
+  low: [
+    'Boshlanishi bor, lekin bu yetarli emas! <span class="highlight-mint">Chalg‘ishni bas qil, tezlikni oshir.</span>',
+    'Hali yarim yo‘lga ham yetmading. <span class="highlight-mint">Qo‘l siltama, vazifalarni birma-bir yop.</span>',
+    'Intizom — xohlamasang ham qilish! <span class="highlight-mint">Keyingi vazifaga o‘t.</span>'
+  ],
+  mid: [
+    'Yarim yo‘l bosib o‘tildi. <span class="highlight-mint">Lekin g‘alaba faqat 100% da! To‘xtama.</span>',
+    'Yaxshi ketmoqdasan. <span class="highlight-mint">Tempi pasaytirma, asosiy marra yaqin.</span>',
+    'Dangasalik vasvasasiga berilma! <span class="highlight-mint">Kechgacha qolganlarini ham tugat.</span>'
+  ],
+  high: [
+    'Barakalla, ozgina qoldi! <span class="highlight-mint">Bugungi kunni 100% g‘alaba bilan yop.</span>',
+    'Zo‘r natija! <span class="highlight-mint">Oxirgi vazifalarni ham yengib, marraga yet.</span>',
+    'Marra ko‘rindi! <span class="highlight-mint">Bugungi seriyangni mukammal darajaga yetkaz.</span>'
+  ],
+  perfect: [
+    'Haqiqiy intizom egasi! <span class="highlight-mint">Bugungi barcha vazifalar 100% bajarildi!</span>',
+    'Qoyilmaqom kun! <span class="highlight-mint">O‘zingni yengding, so‘zingni amalda isbotlading.</span>',
+    'Mukammal kun! <span class="highlight-mint">Bugun vijdoning toza, dam olishga haqlisan.</span>'
+  ]
+};
+
+export function getDisciplineTier(pct, totalTasks = 1) {
+  if (totalTasks === 0 || pct === 0) return 'zero';
+  if (pct < 50) return 'low';
+  if (pct < 80) return 'mid';
+  if (pct < 100) return 'high';
+  return 'perfect';
+}
+
+export function getDisciplineQuote(pct, totalTasks = 1, rotateOffset = 0) {
+  const tier = getDisciplineTier(pct, totalTasks);
+  const quotes = DISCIPLINE_QUOTES[tier];
+  const idx = Math.abs(rotateOffset) % quotes.length;
+  return quotes[idx];
+}
 
 let activeQuoteIndex = 0;
 
@@ -234,20 +270,29 @@ export function renderTodayView(container) {
     const pointsEl = existingGrid.querySelector('#hero-pill-points span:last-child');
     if (pointsEl) pointsEl.textContent = `${totalPoints} ball`;
 
-    // 3. Update task list without touching the rest of the layout
+    // 3. Update motivation card with dynamic tier and quote
+    const quoteCard = existingGrid.querySelector('.today-motivation-card');
+    const quoteTextEl = existingGrid.querySelector('.today-motivation-quote');
+    const currentTier = getDisciplineTier(stats.pct, stats.tasks.length);
+    if (quoteCard && quoteTextEl) {
+      quoteCard.className = `today-motivation-card tier-${currentTier}`;
+      quoteTextEl.innerHTML = getDisciplineQuote(stats.pct, stats.tasks.length, activeQuoteIndex);
+    }
+
+    // 4. Update task list without touching the rest of the layout
     const taskListEl = existingGrid.querySelector('.task-list');
     if (taskListEl) {
       taskListEl.innerHTML = renderTaskListHtml(stats.tasks, stats.doneSet);
       bindTaskListEvents(taskListEl, stats);
     }
 
-    // 4. Update heatmap matrix
+    // 5. Update heatmap matrix
     const matrixEl = existingGrid.querySelector('.heatmap-matrix-grid');
     if (matrixEl) {
       matrixEl.innerHTML = renderHeatmapMatrix(state);
     }
 
-    // 5. Update achievements widget
+    // 6. Update achievements widget
     const achEl = existingGrid.querySelector('.unlocked-pills-wrap');
     if (achEl) {
       achEl.innerHTML = renderAchievementsWidget(state);
@@ -258,7 +303,8 @@ export function renderTodayView(container) {
 
   // Initial Full Render (on first page load or tab switch)
   const heroDateText = formatHeroDate(today);
-  const quoteHtml = MOTIVATION_QUOTES[activeQuoteIndex % MOTIVATION_QUOTES.length];
+  const currentTier = getDisciplineTier(stats.pct, stats.tasks.length);
+  const quoteHtml = getDisciplineQuote(stats.pct, stats.tasks.length, activeQuoteIndex);
 
   container.innerHTML = `
     <div class="today-grid-layout view-fade">
@@ -289,8 +335,8 @@ export function renderTodayView(container) {
           </div>
         </div>
 
-        <!-- Motivational Banner Card with Emerald Glow -->
-        <div class="today-motivation-card">
+        <!-- Motivational Banner Card with Dynamic Glow (Green or Amber) -->
+        <div class="today-motivation-card tier-${currentTier}">
           <p class="today-motivation-quote">${quoteHtml}</p>
           <button id="btn-rotate-msg" class="motivation-refresh-btn" title="Boshqa gapni ko‘rish">↻</button>
         </div>
@@ -351,10 +397,10 @@ export function renderTodayView(container) {
 
   // Bind Events for Initial Render
   container.querySelector('#btn-rotate-msg')?.addEventListener('click', () => {
-    activeQuoteIndex = (activeQuoteIndex + 1) % MOTIVATION_QUOTES.length;
+    activeQuoteIndex++;
     const quoteEl = container.querySelector('.today-motivation-quote');
     if (quoteEl) {
-      quoteEl.innerHTML = MOTIVATION_QUOTES[activeQuoteIndex % MOTIVATION_QUOTES.length];
+      quoteEl.innerHTML = getDisciplineQuote(stats.pct, stats.tasks.length, activeQuoteIndex);
     }
   });
 

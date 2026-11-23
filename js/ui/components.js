@@ -60,11 +60,11 @@ export function closeModal() {
 /**
  * Settings Modal
  */
-export function openSettingsModal() {
-  renderSettingsModal();
+export function openSettingsModal(options = {}) {
+  renderSettingsModal(options);
 }
 
-function renderSettingsModal() {
+function renderSettingsModal(options = {}) {
   const state = getState();
   const isDark = state.settings?.theme !== 'light';
   const threshold = state.settings?.threshold || 80;
@@ -77,6 +77,15 @@ function renderSettingsModal() {
       </div>
 
       <div class="modal-body">
+        <!-- User Profile Name Setting -->
+        <div class="form-group" style="padding-bottom: 12px; border-bottom: 1px solid var(--border-line);">
+          <label class="form-label" for="input-setting-username">Ismingiz (Profil)</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="input-setting-username" class="form-input" type="text" maxlength="30" value="${esc(state.settings?.userName || 'Azamat')}" placeholder="Ismingizni kiriting..." style="flex: 1;" />
+            <button id="btn-save-username" class="btn-primary" style="font-size: 13px; white-space: nowrap; padding: 0 16px;">Saqlash</button>
+          </div>
+        </div>
+
         <!-- Theme Setting -->
         <div class="form-group" style="flex-direction: row; justify-content: space-between; align-items: center;">
           <span class="form-label" style="font-size: 14px;">Ko‘rinish (Mavzu)</span>
@@ -150,6 +159,39 @@ function renderSettingsModal() {
   openModal(html);
 
   // Bind Events
+  const handleSaveUsername = async () => {
+    const input = document.getElementById('input-setting-username');
+    const newName = input?.value.trim();
+    if (!newName) {
+      showToast('Ism bo‘sh bo‘lishi mumkin emas!');
+      return;
+    }
+    await updateState(s => {
+      if (!s.settings) s.settings = {};
+      s.settings.userName = newName;
+    });
+    showToast(`Ism yangilandi: ${newName} ✓`);
+    const nameEl = document.getElementById('sidebar-user-name');
+    if (nameEl) nameEl.textContent = newName;
+  };
+
+  document.getElementById('btn-save-username')?.addEventListener('click', handleSaveUsername);
+  document.getElementById('input-setting-username')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSaveUsername();
+    }
+  });
+
+  if (options && options.focusUsername) {
+    setTimeout(() => {
+      const input = document.getElementById('input-setting-username');
+      if (input) {
+        input.focus();
+        input.select();
+      }
+    }, 150);
+  }
   document.getElementById('btn-theme-dark')?.addEventListener('click', async () => {
     await updateState(s => { s.settings.theme = 'dark'; });
     applyThemeClass('dark');

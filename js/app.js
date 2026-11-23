@@ -4,7 +4,7 @@
    ========================================================================== */
 
 import { initState, getState, subscribeState } from './core/state.js';
-import { initNavigation, getActiveTab, setActiveTab } from './ui/navigation.js';
+import { initNavigation, getActiveTab, setActiveTab, updateNavUI } from './ui/navigation.js';
 import { renderTodayView, renderGoalsView, renderCalendarView, renderJournalView, renderAchievementsView } from './ui/dashboard.js';
 import { applyThemeClass, openSettingsModal, registerInstallPrompt } from './ui/components.js';
 import { renderStatusBar } from './ui/notifications.js';
@@ -130,15 +130,16 @@ async function bootstrap() {
 
   // 5. Subscribe to State Mutations (re-render active view on change)
   subscribeState(() => {
+    updateNavUI();
     renderActiveView();
   });
 
   // 6. Header & Sidebar Buttons
   document.getElementById('btn-header-streak')?.addEventListener('click', () => setActiveTab('achievements'));
   document.getElementById('btn-header-points')?.addEventListener('click', () => setActiveTab('achievements'));
-  document.getElementById('btn-header-settings')?.addEventListener('click', openSettingsModal);
-  document.getElementById('btn-sidebar-settings')?.addEventListener('click', openSettingsModal);
-  document.getElementById('btn-sidebar-user')?.addEventListener('click', openSettingsModal);
+  document.getElementById('btn-header-settings')?.addEventListener('click', () => openSettingsModal());
+  document.getElementById('btn-sidebar-settings')?.addEventListener('click', () => openSettingsModal());
+  document.getElementById('btn-sidebar-user')?.addEventListener('click', () => openSettingsModal({ focusUsername: true }));
 
   // 7. PWA Install Event Listener
   window.addEventListener('beforeinstallprompt', (e) => {

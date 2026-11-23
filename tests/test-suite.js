@@ -8,6 +8,7 @@ import { calculateLiveDayStats, recordDaySnapshot, getDayStatsWithSnapshot, POIN
 import { getStreakInfo, getTotalPoints } from '../js/features/statistics.js';
 import { BADGE_DEFINITIONS, getBadgesStatus } from '../js/features/achievements.js';
 import { migrateLegacyData, LEGACY_STORAGE_KEY } from '../js/core/migration.js';
+import { getDisciplineTier, getDisciplineQuote, DISCIPLINE_QUOTES } from '../js/ui/dashboard.js';
 
 let passedCount = 0;
 let failedCount = 0;
@@ -214,6 +215,20 @@ const badgeJournalist = badges.find(b => b.id === 'badge_journalist');
 assertEquals(badge1Day.unlocked, true, '1-kun badge is unlocked');
 assertEquals(badge3Days.unlocked, true, '3-kun consecutive badge is unlocked');
 assertEquals(badgeJournalist.unlocked, true, 'Journalist badge (3 entries) is unlocked');
+
+// 7. DYNAMIC DISCIPLINE TIERS & MOTIVATION/CAUTIONARY QUOTES
+console.log('\n--- 7. Dynamic Discipline Tiers & Quotes Tests ---');
+assertEquals(getDisciplineTier(0, 4), 'zero', '0% progress yields zero tier');
+assertEquals(getDisciplineTier(25, 4), 'low', '25% progress yields low tier');
+assertEquals(getDisciplineTier(60, 4), 'mid', '60% progress yields mid tier');
+assertEquals(getDisciplineTier(85, 4), 'high', '85% progress yields high tier');
+assertEquals(getDisciplineTier(100, 4), 'perfect', '100% progress yields perfect tier');
+
+const zeroQuote = getDisciplineQuote(0, 4, 0);
+assert(zeroQuote.includes('Dangasalikni yeng') || zeroQuote.includes('0%') || zeroQuote.includes('vazifa'), '0% gives stern wake-up/cautionary quote');
+
+const perfectQuote = getDisciplineQuote(100, 4, 0);
+assert(perfectQuote.includes('Haqiqiy intizom egasi') || perfectQuote.includes('100%'), '100% gives victory quote');
 
 console.log('\n==================================================');
 console.log(`🎉 TEST SUMMARY: ${passedCount} PASSED, ${failedCount} FAILED`);
