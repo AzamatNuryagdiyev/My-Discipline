@@ -1,0 +1,172 @@
+/* ==========================================================================
+   MY DISCIPLINE — Main CSS (Theme Variables, Reset & Base Utilities)
+   Sleek Dark Dashboard — Exact Visual Match
+   ========================================================================== */
+
+:root {
+  --bg-canvas: #0D0F14;
+  --bg-surface: #12151D;
+  --bg-surface-elevated: #161A24;
+  --bg-surface-subtle: #1A1F2C;
+  --bg-surface-hover: #22293A;
+  --border-line: #1C2230;
+  --border-line-subtle: #161B26;
+  --border-focus: rgba(0, 229, 153, 0.45);
+
+  --text-primary: #F3F4F6;
+  --text-secondary: #8E99A8;
+  --text-muted: #5B6577;
+
+  --mint-primary: #00E599;
+  --mint-hover: #10B981;
+  --mint-subtle: rgba(0, 229, 153, 0.08);
+  --mint-border: rgba(0, 229, 153, 0.28);
+  --mint-glow: rgba(0, 229, 153, 0.2);
+
+  --emerald-primary: #00E599;
+  --emerald-hover: #10B981;
+  --emerald-subtle: rgba(0, 229, 153, 0.1);
+  --emerald-border: rgba(0, 229, 153, 0.3);
+  --emerald-glow: rgba(0, 229, 153, 0.25);
+
+  --amber-primary: #F59E0B;
+  --amber-hover: #FBBF24;
+  --amber-subtle: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.28);
+
+  --rose-primary: #F43F5E;
+  --rose-hover: #FB7185;
+  --rose-subtle: rgba(244, 63, 94, 0.12);
+  --rose-border: rgba(244, 63, 94, 0.28);
+
+  --cyan-primary: #06B6D4;
+  --cyan-subtle: rgba(6, 182, 212, 0.12);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.75);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.light {
+  --bg-canvas: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-subtle: #F1F5F9;
+  --bg-surface-hover: #E2E8F0;
+  --border-line: #E2E8F0;
+  --border-line-subtle: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --mint-primary: #059669;
+  --mint-border: rgba(5, 150, 105, 0.35);
+  --mint-glow: rgba(5, 150, 105, 0.2);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-line);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+::selection {
+  background-color: rgba(0, 229, 153, 0.28);
+  color: inherit;
+}
+
+@keyframes gentleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.view-fade {
+  animation: gentleFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 96px;
+}
+
+.content-area {
+  flex: 1;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+@media (min-width: 768px) {
+  .content-area {
+    padding: 32px 32px;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
